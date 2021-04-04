@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
+
+h3 {
+  margin: 1.5rem 0 0.5rem;
+}
+
+.container {
+  max-width: 500px;
+  margin: 2rem auto;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid lightgray;
+  padding: 2rem;
+  border-radius: 0.25rem;
+}
+
+.header {
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  display: inline-block;
+  background: steelblue;
+  color: #fff;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.btn-success {
+  background-color: green;
+}
+
+.btn-lg {
+  font-size: 1.5rem;
+}
+
+.btn-sm {
+  font-size: 0.8rem;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.item {
+  background: #f4f4f4;
+  margin: 0.25rem;
+  padding: 0.5rem 1rem;
+  border-left: 5px solid green;
+}
+
+.item.is-rented {
+  border-left: 5px solid red;
+}
+
+.item.is-rented h4 {
+  color: gray;
+}
+
+.item-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-form {
+  margin-bottom: 3rem;
+}
+
+.form-control {
+  margin: 1rem 0;
+}
+
+.form-control input {
+  width: 100%;
+  height: 2rem;
+  margin: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+}
+
+.form-control-check input {
+  width: 1rem;
+  height: 1rem;
+  margin-left: 1rem;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.margin-right {
+  margin-right: 1rem;
+}
