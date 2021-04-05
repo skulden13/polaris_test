@@ -5,7 +5,10 @@ from django.db import models
 class BicycleQuerySet(models.QuerySet):
   def get_random(self):
     items_available = self.filter(rented=False)
-    n = random.randint(0, items_available.count() - 1)
+    cnt = items_available.count() - 1
+    if cnt < 0:
+      return None
+    n = random.randint(0, cnt)
     item = items_available[n]
     item.rented = True
     item.save()
