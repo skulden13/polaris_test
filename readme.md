@@ -22,6 +22,8 @@
 This task definition is similar to renting smth. You get something random (bicycle, scooter, car). While the item is rented, it's unavailable for renting by other users. When you are returning an item (free), it became available again. 
 I decided to simulate the task of renting a bike as less abstract and more life-related.
 
+![ui_bikes_for_rent](./readme_images/ui_bikes_for_rent.png)
+
 
 ## Run the following commands to deploy the project locally:
 
