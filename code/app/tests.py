@@ -44,8 +44,9 @@ def test_rent_random_and_free_items(data):
   item1, item2, item3 = data
 
   assert item3.rented
-  item = Bicycle.objects.free(item3.id)
-  assert not item.rented
+  Bicycle.objects.free(item3.id)
+  item3.refresh_from_db()
+  assert not item3.rented
 
   assert Bicycle.objects.filter(rented=False).count() == 3
   # Retured item are not the same

@@ -53,8 +53,8 @@ def free_item(request, id):
   if request.method == 'PATCH':
     status = 200
     try:
-      item = Bicycle.objects.free(id=id)
-      response = json.dumps([{'id': item.id, 'name': item.name, 'rented': item.rented}])
+      Bicycle.objects.free(id=id)
+      response = json.dumps([{ 'Success': f'Item with id={id} is free!' }])
     except:
       status = 404
       response = json.dumps([{ 'Error': 'No item with that id!' }])

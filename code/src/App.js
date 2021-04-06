@@ -94,10 +94,12 @@ function App() {
     if ('Error' in data[0]) {
       console.log(data);
       return;
+    } else if ('Success' in data[0]) {
+      const item = itemsRented.map((item) => (item.id == id) && item)[0];
+      item.rented = false;
+      setItemsRented(itemsRented.filter((item) => item.id !== id));
+      setItemsAvailable([...itemsAvailable, item]);
     }
-
-    setItemsRented(itemsRented.filter((item) => item.id !== id));
-    setItemsAvailable([...itemsAvailable, data[0]]);
   }
 
   return (

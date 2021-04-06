@@ -13,10 +13,7 @@ class BicycleQuerySet(models.QuerySet):
       return item
 
   def free(self, id):
-    item = self.get(id=id)
-    item.rented = False
-    item.save(update_fields=['rented'])
-    return item
+    self.filter(id=id).update(rented=False)
 
 
 class Bicycle(models.Model):
