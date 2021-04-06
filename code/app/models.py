@@ -1,18 +1,16 @@
-import random
-from django.db import models
+from django.db import models, transaction
 
 
 class BicycleQuerySet(models.QuerySet):
   def rent_random(self):
-    items_available = self.filter(rented=False)
-    cnt = items_available.count() - 1
-    if cnt < 0:
-      return None
-    n = random.randint(0, cnt)
-    item = items_available[n]
-    item.rented = True
-    item.save()
-    return item
+    with transaction.atomic():
+      item = self.select_for_update()\
+          .filter(rented=False).order_by('?').first()
+      if not item:
+        return None
+      item.rented = True
+      item.save(update_fields=['rented'])
+      return item
 
   def free(self, id):
     item = self.get(id=id)
