@@ -40,7 +40,7 @@ def get_item(request):
   if request.method == 'GET':
     status = 200
     try:
-      item = Bicycle.objects.get_random()
+      item = Bicycle.objects.rent_random()
       response = json.dumps([{'id': item.id, 'name': item.name, 'rented': item.rented}])
     except:
       status = 404

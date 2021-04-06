@@ -17,30 +17,30 @@ def data():
 def test_can_get_only_not_rented_items(data):
   item1, item2, item3 = data
   
-  item = Bicycle.objects.get_random()
+  item = Bicycle.objects.rent_random()
   # Returned item should be already with rented=True
   assert item.rented
   assert item.id in [item1.id, item2.id]
   assert Bicycle.objects.filter(rented=False).count() == 1
 
-  item = Bicycle.objects.get_random()
+  item = Bicycle.objects.rent_random()
   assert item.rented
   assert item.id in [item1.id, item2.id]
   assert Bicycle.objects.filter(rented=False).count() == 0
 
   # Nothing to return 
-  item = Bicycle.objects.get_random()
+  item = Bicycle.objects.rent_random()
   assert not item
 
   # Change 3rd item and try again
   item3.rented = False
   item3.save()
-  item = Bicycle.objects.get_random()
+  item = Bicycle.objects.rent_random()
   assert item.rented
   assert item.id == item3.id
 
 
-def test_get_random_and_free_items(data):
+def test_rent_random_and_free_items(data):
   item1, item2, item3 = data
 
   assert item3.rented
@@ -49,8 +49,8 @@ def test_get_random_and_free_items(data):
 
   assert Bicycle.objects.filter(rented=False).count() == 3
   # Retured item are not the same
-  rand_item1 = Bicycle.objects.get_random()
-  rand_item2 = Bicycle.objects.get_random()
+  rand_item1 = Bicycle.objects.rent_random()
+  rand_item2 = Bicycle.objects.rent_random()
   assert rand_item1.id != rand_item2.id 
 
   assert Bicycle.objects.filter(rented=False).count() == 1

@@ -3,7 +3,7 @@ from django.db import models
 
 
 class BicycleQuerySet(models.QuerySet):
-  def get_random(self):
+  def rent_random(self):
     items_available = self.filter(rented=False)
     cnt = items_available.count() - 1
     if cnt < 0:
