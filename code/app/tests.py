@@ -1,4 +1,5 @@
 import pytest
+from django.urls import reverse
 from app.models import Bicycle
 
 
@@ -59,3 +60,54 @@ def test_rent_random_and_free_items(data):
   Bicycle.objects.free(rand_item2.id)
   # Items are available for rent
   assert Bicycle.objects.filter(rented=False).count() == 3
+
+
+def test_api(data, client):
+  item1, item2, item3 = data
+
+  # 1. fetch all
+  url = reverse('app:all')
+  response = client.get(url)
+  assert response.status_code == 200
+  # check that returned all items
+  content = str(response.content)
+  for item in [item1, item2, item3]:
+    assert item.name in content
+ 
+  # 2. check get random
+  url = reverse('app:get')
+  response = client.get(url)
+  assert response.status_code == 200
+  # 1 item left
+  response = client.get(url)
+  assert response.status_code == 200
+  response = client.get(url)
+  # No items to return
+  assert response.status_code == 404
+
+  # 3. check free
+  url = reverse('app:free', kwargs={'id': item1.id})
+  # 1 item should be freed
+  response = client.patch(url)
+  assert response.status_code == 200
+  Bicycle.objects.filter(rented=False).count() == 1
+  # 2 items should be freed
+  url = reverse('app:free', kwargs={'id': item2.id})
+  response = client.patch(url)
+  assert response.status_code == 200
+  Bicycle.objects.filter(rented=False).count() == 2
+  # 3 items should be freed
+  url = reverse('app:free', kwargs={'id': item3.id})
+  response = client.patch(url)
+  assert response.status_code == 200
+  Bicycle.objects.filter(rented=False).count() == 3
+
+  # 4. check new
+  url = reverse('app:new')
+  data = {'name': 'Orbea', 'rented': True}
+  response = client.post(url, data, content_type='application/json')
+  assert response.status_code == 200
+  Bicycle.objects.all().count() == 4
+  new_item = Bicycle.objects.get(rented=True)
+  assert new_item.name == 'Orbea'
+  assert new_item.rented
