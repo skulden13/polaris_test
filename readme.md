@@ -33,3 +33,7 @@ I decided to simulate the task of renting a bike as less abstract and more life-
 4. python manage.py createsuperuser or use default "admin/admin"
 5. python manage.py runserver
 6. yarn && yarn start
+
+## Running tests:
+
+Call `pytest` from `/code` directory.
