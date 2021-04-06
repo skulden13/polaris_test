@@ -15,7 +15,7 @@ class BicycleQuerySet(models.QuerySet):
   def free(self, id):
     item = self.get(id=id)
     item.rented = False
-    item.save()
+    item.save(update_fields=['rented'])
     return item
 
 
