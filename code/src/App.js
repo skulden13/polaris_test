@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Items from './components/Items';
 import AddItem from './components/AddItem';
-
-const SERVER_URL = 'http://localhost:8000/app/api/';
+import { API_URL } from './const';
 
 
 function App() {
@@ -29,7 +28,7 @@ function App() {
 
   // Fetch Items
   const fetchItems = async () => {
-    const res = await fetch(SERVER_URL);
+    const res = await fetch(API_URL);
     const data = await res.json();
     
     return data;
@@ -38,7 +37,7 @@ function App() {
   // Add Item
   const addItem = async (item) => {
     const res = await fetch(
-      `${SERVER_URL}new/`, {
+      `${API_URL}new/`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -65,7 +64,7 @@ function App() {
 
   // Rent Item (Get Random Item)
   const rentItem = async () => {
-    const res = await fetch(`${SERVER_URL}get/`);
+    const res = await fetch(`${API_URL}get/`);
     const data = await res.json();
 
     if ('Error' in data[0]) {
@@ -82,7 +81,7 @@ function App() {
   // Return Rented (Free)
   const returnRented = async (id) => {
     const res = await fetch(
-      `${SERVER_URL}free/${id}`, {
+      `${API_URL}free/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-type': 'application/json',
