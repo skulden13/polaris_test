@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-
+import { React, useState } from 'react';
 
 const AddItem = ({ onAdd }) => {
   const [name, setName] = useState('');
@@ -9,7 +8,8 @@ const AddItem = ({ onAdd }) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!name) { 
+    if (!name) {
+      // eslint-disable-next-line no-alert
       alert('Please give a bike name');
       return;
     }
@@ -17,25 +17,25 @@ const AddItem = ({ onAdd }) => {
     onAdd({ name, rented });
     setName('');
     setRented(false);
-  }
+  };
 
   return (
-    <form className='add-form' onSubmit={onSubmit}>
-      <div className='form-control'>
+    <form className="add-form" onSubmit={onSubmit}>
+      <div className="form-control">
         <label>Bike name</label>
         <input
-          type='text'
-          placeholder='Enter a Bike Name'
+          type="text"
+          placeholder="Enter a Bike Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-        /> 
+        />
       </div>
 
       <div className="flex">
-        <div className='form-control form-control-check flex'>
+        <div className="form-control form-control-check flex">
           <label>Rented</label>
           <input
-            type='checkbox'
+            type="checkbox"
             checked={rented}
             value={rented}
             onChange={(e) => setRented(e.currentTarget.checked)}
@@ -45,11 +45,11 @@ const AddItem = ({ onAdd }) => {
         <input type="submit" value="Save Bike" className="btn btn-success" />
       </div>
     </form>
-  )
-}
+  );
+};
 
 AddItem.propTypes = {
-  onAdd: PropTypes.func,
+  onAdd: PropTypes.func.isRequired,
 };
 
 export default AddItem;

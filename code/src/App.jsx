@@ -1,38 +1,37 @@
-import { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
+
+import AddItem from './components/AddItem';
 import Header from './components/Header';
 import Items from './components/Items';
-import AddItem from './components/AddItem';
 import { API_URL } from './const';
-
 
 function App() {
   const [showAddItem, setShowAddItem] = useState(false);
   const [itemsAvailable, setItemsAvailable] = useState([]);
   const [itemsRented, setItemsRented] = useState([]);
 
+  // Fetch Items
+  const fetchItems = async () => {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    return data;
+  };
+
   useEffect(() => {
     const getItems = async () => {
-
       const itemsFromServer = await fetchItems();
-      
+
       setItemsAvailable(
-        itemsFromServer.filter((item) => !item.rented )
+        itemsFromServer.filter((item) => !item.rented),
       );
       setItemsRented(
-        itemsFromServer.filter((item) => item.rented )
+        itemsFromServer.filter((item) => item.rented),
       );
     };
 
     getItems();
   }, []);
-
-  // Fetch Items
-  const fetchItems = async () => {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-    
-    return data;
-  }
 
   // Add Item
   const addItem = async (item) => {
@@ -49,11 +48,11 @@ function App() {
 
     if (data) {
       if ('Error' in data[0]) {
-        console.log(data);
+        window.console.log(data);
         return;
       }
 
-      const newItem = data[0];      
+      const newItem = data[0];
       if (!newItem.rented) {
         setItemsAvailable([...itemsAvailable, newItem]);
       } else {
@@ -68,15 +67,15 @@ function App() {
     const data = await res.json();
 
     if ('Error' in data[0]) {
-      console.log(data);
+      window.console.log(data);
       return;
     }
-  
+
     setItemsAvailable(
-      itemsAvailable.filter((item) => item.id !== data[0].id)
+      itemsAvailable.filter((item) => item.id !== data[0].id),
     );
     setItemsRented([...itemsRented, data[0]]);
-  }
+  };
 
   // Return Rented (Free)
   const returnRented = async (id) => {
@@ -92,15 +91,14 @@ function App() {
     const data = await res.json();
 
     if ('Error' in data[0]) {
-      console.log(data);
-      return;
+      window.console.log(data);
     } else if ('Success' in data[0]) {
-      const item = itemsRented.map((item) => (item.id === id) && item)[0];
-      item.rented = false;
-      setItemsRented(itemsRented.filter((item) => item.id !== id));
-      setItemsAvailable([...itemsAvailable, item]);
+      const itemToFree = itemsRented.filter((i) => i?.id === id)[0];
+      itemToFree.rented = false;
+      setItemsRented(itemsRented.filter((i) => i?.id !== id));
+      setItemsAvailable([...itemsAvailable, itemToFree]);
     }
-  }
+  };
 
   return (
     <div className="container">
@@ -111,9 +109,9 @@ function App() {
       />
 
       {showAddItem && <AddItem onAdd={addItem} />}
-      
+
       <h3>Bikes available: {itemsAvailable.length}</h3>
-      
+
       {itemsAvailable.length > 0 ? (
         <Items
           items={itemsAvailable}
@@ -123,7 +121,7 @@ function App() {
       )}
 
       <h3>Bikes rented:</h3>
-      
+
       {itemsRented.length > 0 ? (
         <Items
           items={itemsRented}
