@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Item from './Item';
 
 
@@ -10,6 +11,15 @@ const Items = ({ items, onClick }) => {
       }
     </>
   );
+};
+
+Items.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    rented: PropTypes.bool,
+  })),
+  onClick: PropTypes.func,
 };
 
 export default Items;

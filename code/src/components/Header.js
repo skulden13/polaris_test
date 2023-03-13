@@ -19,4 +19,10 @@ const Header = ({ onAdd, showAdd, onRent }) => {
   );
 };
 
+Header.propTypes = {
+  onAdd: PropTypes.func,
+  showAdd: PropTypes.bool,
+  onRent: PropTypes.func,
+};
+
 export default Header;

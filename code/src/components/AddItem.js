@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 
@@ -41,10 +42,14 @@ const AddItem = ({ onAdd }) => {
           />
         </div>
 
-        <input type="submit" value="Save Bike"  className="btn btn-success" />
+        <input type="submit" value="Save Bike" className="btn btn-success" />
       </div>
     </form>
   )
 }
+
+AddItem.propTypes = {
+  onAdd: PropTypes.func,
+};
 
 export default AddItem;

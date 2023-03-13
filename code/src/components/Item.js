@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { FaBiking } from 'react-icons/fa';
 import Button from './Button';
 
@@ -25,6 +26,15 @@ const Item = ({ item, onClick }) => {
       </div>
     </div>
   );
+};
+
+Item.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    rented: PropTypes.bool,
+  }),
+  onClick: PropTypes.func,
 };
 
 export default Item;

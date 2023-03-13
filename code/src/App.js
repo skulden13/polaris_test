@@ -13,7 +13,9 @@ function App() {
 
   useEffect(() => {
     const getItems = async () => {
+
       const itemsFromServer = await fetchItems();
+      
       setItemsAvailable(
         itemsFromServer.filter((item) => !item.rented )
       );
@@ -79,7 +81,6 @@ function App() {
 
   // Return Rented (Free)
   const returnRented = async (id) => {
-    // const res = await fetch(`${SERVER_URL}free/${id}`);
     const res = await fetch(
       `${SERVER_URL}free/${id}`, {
         method: 'PATCH',
@@ -95,7 +96,7 @@ function App() {
       console.log(data);
       return;
     } else if ('Success' in data[0]) {
-      const item = itemsRented.map((item) => (item.id == id) && item)[0];
+      const item = itemsRented.map((item) => (item.id === id) && item)[0];
       item.rented = false;
       setItemsRented(itemsRented.filter((item) => item.id !== id));
       setItemsAvailable([...itemsAvailable, item]);
@@ -109,8 +110,11 @@ function App() {
         showAdd={showAddItem}
         onRent={rentItem}
       />
+
       {showAddItem && <AddItem onAdd={addItem} />}
+      
       <h3>Bikes available: {itemsAvailable.length}</h3>
+      
       {itemsAvailable.length > 0 ? (
         <Items
           items={itemsAvailable}
@@ -118,7 +122,9 @@ function App() {
       ) : (
         'No bikes are available for rent.'
       )}
+
       <h3>Bikes rented:</h3>
+      
       {itemsRented.length > 0 ? (
         <Items
           items={itemsRented}
