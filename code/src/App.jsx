@@ -1,4 +1,6 @@
-import { React, useState, useEffect } from 'react';
+import {
+ React, useState, useEffect, useCallback,
+} from 'react';
 
 import AddItem from './components/AddItem';
 import Header from './components/Header';
@@ -10,16 +12,16 @@ function App() {
   const [itemsAvailable, setItemsAvailable] = useState([]);
   const [itemsRented, setItemsRented] = useState([]);
 
-  // Fetch Items
-  const fetchItems = async () => {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    return data;
-  };
-
   useEffect(() => {
     const getItems = async () => {
+      // Fetch Items
+      const fetchItems = async () => {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+
+        return data;
+      };
+
       const itemsFromServer = await fetchItems();
 
       setItemsAvailable(
@@ -34,7 +36,7 @@ function App() {
   }, []);
 
   // Add Item
-  const addItem = async (item) => {
+  const addItem = useCallback(async (item) => {
     const res = await fetch(
       `${API_URL}new/`, {
         method: 'POST',
@@ -59,10 +61,10 @@ function App() {
         setItemsRented([...itemsRented, newItem]);
       }
     }
-  };
+  }, [itemsAvailable, setItemsAvailable, itemsRented, setItemsRented]);
 
   // Rent Item (Get Random Item)
-  const rentItem = async () => {
+  const rentItem = useCallback(async () => {
     const res = await fetch(`${API_URL}get/`);
     const data = await res.json();
 
@@ -75,10 +77,10 @@ function App() {
       itemsAvailable.filter((item) => item.id !== data[0].id),
     );
     setItemsRented([...itemsRented, data[0]]);
-  };
+  }, [itemsAvailable, setItemsAvailable, itemsRented, setItemsRented]);
 
   // Return Rented (Free)
-  const returnRented = async (id) => {
+  const returnRented = useCallback(async (id) => {
     const res = await fetch(
       `${API_URL}free/${id}`, {
         method: 'PATCH',
@@ -93,12 +95,12 @@ function App() {
     if ('Error' in data[0]) {
       window.console.log(data);
     } else if ('Success' in data[0]) {
-      const itemToFree = itemsRented.filter((i) => i?.id === id)[0];
+      const itemToFree = itemsRented.filter((i) => i && i.id === id)[0];
       itemToFree.rented = false;
-      setItemsRented(itemsRented.filter((i) => i?.id !== id));
+      setItemsRented(itemsRented.filter((i) => i && i.id !== id));
       setItemsAvailable([...itemsAvailable, itemToFree]);
     }
-  };
+  }, [itemsAvailable, setItemsAvailable, itemsRented, setItemsRented]);
 
   return (
     <div className="container">
