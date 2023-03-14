@@ -122,7 +122,7 @@ function App() {
         'No bikes are available for rent.'
       )}
 
-      <h3>Bikes rented:</h3>
+      <h3>Bikes rented: {itemsRented.length}</h3>
 
       {itemsRented.length > 0 ? (
         <Items
