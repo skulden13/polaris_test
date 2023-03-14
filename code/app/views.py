@@ -59,4 +59,22 @@ def free_item(request, id):
       status = 404
       response = json.dumps([{ 'Error': 'No item with that id!' }])
     return HttpResponse(response, status=status, content_type='text/json')
-    
+
+
+@csrf_exempt
+# TODO: check permissions to perform DELETE
+def delete_by_name(request):
+  if request.method == 'DELETE':
+    payload = json.loads(request.body)
+    names = payload.get('names', '')
+
+    try:
+      status = 200
+      items = Bicycle.objects.filter(name__in=names)
+      items.delete()
+
+      response = json.dumps([{ 'Success': f'{items.count()} item(s) were deleted (namespaces={names})!' }])
+    except:
+      status = 404
+      response = json.dumps([{ 'Error': f'No items with such {names}!' }])
+    return HttpResponse(response, status=status, content_type='text/json')

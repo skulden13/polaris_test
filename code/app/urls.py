@@ -8,4 +8,5 @@ urlpatterns = [
   path('api/new/', views.add_item, name='new'),
   path('api/get/', views.get_item, name='get'),
   path('api/free/<str:id>', views.free_item, name='free'),
+  path('api/delete/', views.delete_by_name, name='delete'),
 ]
